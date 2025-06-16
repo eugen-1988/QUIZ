@@ -43,7 +43,7 @@ export default function QuestionTimer({ timeout, onTimeout, mode }) {
       {/* Afișare text cu ceas */}
       <div className="flex items-center justify-end text-sm font-mono text-white mb-1 gap-1">
         <FiClock className="text-white animate-pulse" />
-        <span>{formatTime(timeLeft)}</span>
+        <span className="text-green-400">{formatTime(timeLeft)}</span>
       </div>
 
       {/* Bara de progres */}
