@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { quizComplete } from "../assets";
 import {
   FaCheckCircle,
@@ -5,13 +6,19 @@ import {
   FaRegClock,
   FaRedo,
 } from "react-icons/fa";
+import { saveQuizResult } from "../utils/saveQuizResult"; // ✅ importă funcția de salvare
 
-export default function Summary({ answers, onRestart, language }) {
+export default function Summary({ answers, onRestart, language, mode }) {
   const total = answers.length;
   const correct = answers.filter((a) => a.isCorrect).length;
   const skipped = answers.filter((a) => a.answer === null).length;
   const incorrect = total - correct - skipped;
   const percent = Math.round((correct / total) * 100);
+
+  // ✅ Salvează scorul o singură dată când componenta se montează
+  useEffect(() => {
+    saveQuizResult(correct, mode);
+  }, []);
 
   // 🔁 Dicționar pentru limbi
   const t = {

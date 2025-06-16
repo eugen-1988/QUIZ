@@ -75,6 +75,7 @@ export default function Quiz({
           answers={userAnswers}
           onRestart={onRestart}
           language={language}
+          mode={mode}
         />
       )}
     </motion.div>

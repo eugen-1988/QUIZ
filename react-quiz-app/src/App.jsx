@@ -8,12 +8,17 @@ import "react-toastify/dist/ReactToastify.css";
 import questions_de from "./data/questions_de";
 import questions_en from "./data/questions_en";
 import { de_flag, gb_flag } from "./assets";
+import AuthGate from "./components/AuthGate";
+import { auth } from "./firebase";
+import ResultsPanel from "./components/ResultsPanel";
 
 export default function App() {
   const [quizStarted, setQuizStarted] = useState(false);
   const [mode, setMode] = useState(null);
   const [timeout, setTimeoutValue] = useState(0);
   const [questionCount, setQuestionCount] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showResultsPanel, setShowResultsPanel] = useState(false);
   const [language, setLanguage] = useState(() => {
     return localStorage.getItem("quiz_language") || "de";
   });
@@ -63,20 +68,42 @@ export default function App() {
     setQuestionCount(null);
   };
 
-  const renderModeButton = (label, value, color) => (
-    <button
-      onClick={() => handleModeSelect(value)}
-      className={`w-32 px-4 py-2 rounded-lg font-semibold shadow transition flex items-center justify-center gap-1
-        ${
-          mode === value
-            ? `bg-${color}-600 text-white scale-105 ring-4 ring-${color}-300 ring-offset-2`
-            : `bg-${color}-400 text-white hover:bg-${color}-500`
+  const handleAuthSuccess = () => {
+    setIsAuthenticated(true);
+  };
+
+  const renderModeButton = (label, value) => {
+    const isSelected = mode === value;
+
+    const modeStyles = {
+      easy: {
+        base: "bg-green-400 hover:bg-green-500",
+        active: "bg-green-600 ring-4 ring-green-300 ring-offset-2",
+      },
+      medium: {
+        base: "bg-yellow-400 hover:bg-yellow-500",
+        active: "bg-yellow-600 ring-4 ring-yellow-300 ring-offset-2",
+      },
+      hard: {
+        base: "bg-red-400 hover:bg-red-500",
+        active: "bg-red-600 ring-4 ring-red-300 ring-offset-2",
+      },
+    };
+
+    const styles = modeStyles[value];
+
+    return (
+      <button
+        onClick={() => handleModeSelect(value)}
+        className={`w-32 px-4 py-2 rounded-lg font-semibold shadow transition flex items-center justify-center gap-1 text-white ${
+          isSelected ? styles.active : styles.base
         }`}
-    >
-      {label}
-      {mode === value && <span className="text-white font-bold">✓</span>}
-    </button>
-  );
+      >
+        {label}
+        {isSelected && <span className="text-white font-bold">✓</span>}
+      </button>
+    );
+  };
 
   const renderQuestionCountButton = (count) => (
     <button
@@ -99,7 +126,30 @@ export default function App() {
     >
       <Header language={language} />
 
-      <div className="absolute top-6 right-6 flex gap-2">
+      {/* 🔁 Limbă + Logout */}
+      <div className="absolute top-6 right-6 flex gap-2 items-center">
+        {isAuthenticated && (
+          <button
+            onClick={() => {
+              import("firebase/auth").then(({ signOut }) => {
+                signOut(auth).then(() => {
+                  setIsAuthenticated(false);
+                  setQuizStarted(false);
+                });
+              });
+            }}
+            className="px-3 py-1 text-sm font-semibold primary-btn"
+          >
+            Logout
+          </button>
+        )}
+        <button
+          onClick={() => setShowResultsPanel((prev) => !prev)}
+          className="px-3 py-1 text-sm font-semibold primary-btn"
+        >
+          {language === "de" ? "Deine Punkte" : "Your Score"}
+        </button>
+
         <button
           onClick={() => {
             setLanguage("de");
@@ -129,7 +179,9 @@ export default function App() {
         ></button>
       </div>
 
-      {!quizStarted ? (
+      {!isAuthenticated ? (
+        <AuthGate onAuthSuccess={handleAuthSuccess} language={language} />
+      ) : !quizStarted ? (
         <motion.div
           className="w-full max-w-3xl px-4 rounded-2xl overflow-hidden"
           initial={{ opacity: 0, y: 30 }}
@@ -182,7 +234,14 @@ export default function App() {
           language={language}
         />
       )}
-
+      {showResultsPanel && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center">
+          <ResultsPanel
+            language={language}
+            onClose={() => setShowResultsPanel(false)}
+          />
+        </div>
+      )}
       <ToastContainer />
     </main>
   );
