@@ -7,6 +7,7 @@ export default function Question({
   onTimeout,
   timeout,
   mode,
+  language, // 👈 primim limba (de/en)
 }) {
   return (
     <div>

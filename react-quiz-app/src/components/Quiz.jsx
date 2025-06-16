@@ -1,21 +1,31 @@
 import { useState, useRef, useMemo } from "react";
 import { motion } from "framer-motion";
-import questions from "../data/questions_de";
+import questions_de from "../data/questions_de";
+import questions_en from "../data/questions_en";
 import Question from "./Question";
 import Summary from "./Summary";
 import { bg_container } from "../assets";
 
-export default function Quiz({ timeout, mode, questionCount, onRestart }) {
+export default function Quiz({
+  timeout,
+  mode,
+  questionCount,
+  onRestart,
+  language,
+}) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
   const [quizDone, setQuizDone] = useState(false);
 
   const answeredRef = useRef(false);
 
-  // 🔁 Selectăm doar primele N întrebări pe baza selecției utilizatorului
+  // 🔁 Selectăm fișierul de întrebări în funcție de limbă
+  const questions = language === "en" ? questions_en : questions_de;
+
+  // 🔁 Selectăm doar primele N întrebări
   const selectedQuestions = useMemo(
     () => questions.slice(0, questionCount),
-    [questionCount]
+    [questions, questionCount]
   );
 
   const currentQuestion = selectedQuestions[activeIndex];
@@ -39,7 +49,7 @@ export default function Quiz({ timeout, mode, questionCount, onRestart }) {
       } else {
         setQuizDone(true);
       }
-    }, 3000);
+    }, 3000); // Poți regla delay-ul după cum dorești
   };
 
   return (
@@ -50,7 +60,6 @@ export default function Quiz({ timeout, mode, questionCount, onRestart }) {
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ duration: 0.7, ease: "easeOut" }}
     >
-      {/* Afișăm întrebările sau rezumatul final */}
       {!quizDone ? (
         <Question
           key={currentQuestion.id}
@@ -59,9 +68,14 @@ export default function Quiz({ timeout, mode, questionCount, onRestart }) {
           onTimeout={() => handleAnswer(null)}
           timeout={timeout}
           mode={mode}
+          language={language}
         />
       ) : (
-        <Summary answers={userAnswers} onRestart={onRestart} />
+        <Summary
+          answers={userAnswers}
+          onRestart={onRestart}
+          language={language}
+        />
       )}
     </motion.div>
   );

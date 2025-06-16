@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-export default function Answers({ answers, onSelect }) {
+export default function Answers({ answers, onSelect, language }) {
   const [shuffled, setShuffled] = useState([]);
   const [selected, setSelected] = useState(null);
   const originalShuffled = useRef(false);
@@ -25,18 +25,18 @@ export default function Answers({ answers, onSelect }) {
     if (!selected) return "primary-btn w-full mb-3";
 
     if (answer === selected) {
-      // User's selected answer
+      // ✅ Răspuns ales de utilizator
       return answer === correctAnswer
-        ? "bg-green-500 text-white w-full mb-3 py-2 px-4 rounded-lg"
-        : "bg-red-500 text-white w-full mb-3 py-2 px-4 rounded-lg";
+        ? "bg-green-500 text-white w-full mb-3 py-2 px-4 rounded-lg ring-4 ring-green-300 ring-offset-2"
+        : "bg-red-500 text-white w-full mb-3 py-2 px-4 rounded-lg ring-4 ring-red-300 ring-offset-2";
     }
 
     if (answer === correctAnswer) {
-      // Show correct answer even if not selected
+      // ✅ Afișăm răspunsul corect chiar dacă nu a fost ales
       return "bg-green-500/80 text-white w-full mb-3 py-2 px-4 rounded-lg";
     }
 
-    // Other unselected incorrect answers
+    // ❌ Alte răspunsuri incorecte neselectate
     return "bg-gray-200 text-dark w-full mb-3 py-2 px-4 rounded-lg";
   };
 

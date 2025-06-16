@@ -6,29 +6,59 @@ import {
   FaRedo,
 } from "react-icons/fa";
 
-export default function Summary({ answers, onRestart }) {
+export default function Summary({ answers, onRestart, language }) {
   const total = answers.length;
   const correct = answers.filter((a) => a.isCorrect).length;
   const skipped = answers.filter((a) => a.answer === null).length;
   const incorrect = total - correct - skipped;
   const percent = Math.round((correct / total) * 100);
 
+  // 🔁 Dicționar pentru limbi
+  const t = {
+    de: {
+      completed: "Quiz abgeschlossen",
+      restart: "Neu starten",
+      result: "Du hast",
+      of: "von",
+      correct: "Fragen richtig beantwortet",
+      skipped: "Übersprungen",
+      wrong: "Falsch",
+      correctSingle: "Richtig",
+      givenAnswer: "Gegebene Antwort",
+      noAnswer: "Keine Antwort gegeben",
+    },
+    en: {
+      completed: "Quiz completed",
+      restart: "Restart",
+      result: "You answered",
+      of: "out of",
+      correct: "questions correctly",
+      skipped: "Skipped",
+      wrong: "Incorrect",
+      correctSingle: "Correct",
+      givenAnswer: "Given answer",
+      noAnswer: "No answer given",
+    },
+  };
+
+  const dict = t[language] || t.de;
+
   const renderResultBadge = (isCorrect, answer) => {
     if (answer === null) {
       return (
         <span className="inline-flex items-center gap-1 text-yellow-600">
-          <FaRegClock /> übersprungen
+          <FaRegClock /> {dict.skipped}
         </span>
       );
     }
 
     return isCorrect ? (
       <span className="inline-flex items-center gap-1 text-green-600">
-        <FaCheckCircle /> richtig
+        <FaCheckCircle /> {dict.correctSingle}
       </span>
     ) : (
       <span className="inline-flex items-center gap-1 text-red-600">
-        <FaTimesCircle /> falsch
+        <FaTimesCircle /> {dict.wrong}
       </span>
     );
   };
@@ -36,7 +66,7 @@ export default function Summary({ answers, onRestart }) {
   const renderAnswerText = (answer) =>
     answer ?? (
       <span className="inline-flex items-center gap-1 text-yellow-600">
-        <FaRegClock /> Keine Antwort gegeben
+        <FaRegClock /> {dict.noAnswer}
       </span>
     );
 
@@ -47,37 +77,37 @@ export default function Summary({ answers, onRestart }) {
         onClick={onRestart}
         className="primary-btn absolute top-4 right-4 text-sm flex items-center gap-1"
       >
-        <FaRedo /> Neu starten
+        <FaRedo /> {dict.restart}
       </button>
 
       {/* 🏁 Imagine finală */}
       <img
         src={quizComplete}
-        alt="Quiz abgeschlossen"
+        alt={dict.completed}
         className="w-32 mx-auto mb-4 drop-shadow"
       />
 
       {/* ✅ Titlu */}
       <h2 className="text-2xl font-bold text-center text-dark mb-2 flex justify-center items-center gap-2">
-        Quiz abgeschlossen
+        {dict.completed}
       </h2>
 
       {/* 📊 Rezultat general */}
       <p className="text-center text-dark mb-4">
-        Du hast <strong>{correct}</strong> von {total} Fragen richtig
-        beantwortet (<strong>{percent}%</strong>)
+        {dict.result} <strong>{correct}</strong> {dict.of} {total}{" "}
+        {dict.correct} (<strong>{percent}%</strong>)
       </p>
 
       {/* 📌 Statistici */}
       <ul className="text-sm mb-6 flex justify-center gap-6">
         <li className="flex items-center gap-2 text-green-600">
-          <FaCheckCircle /> Richtig: {correct}
+          <FaCheckCircle /> {dict.correctSingle}: {correct}
         </li>
         <li className="flex items-center gap-2 text-red-600">
-          <FaTimesCircle /> Falsch: {incorrect}
+          <FaTimesCircle /> {dict.wrong}: {incorrect}
         </li>
         <li className="flex items-center gap-2 text-yellow-600">
-          <FaRegClock /> Übersprungen: {skipped}
+          <FaRegClock /> {dict.skipped}: {skipped}
         </li>
       </ul>
 
@@ -94,19 +124,16 @@ export default function Summary({ answers, onRestart }) {
                 : "border-red-500 bg-red-50"
             }`}
           >
-            {/* 🟢 Eticheta (richtig/falsch/übersprungen) MUTATĂ SUS */}
             <p className="text-sm mb-1">
               {renderResultBadge(isCorrect, answer)}
             </p>
 
-            {/* Întrebarea */}
             <p className="font-medium text-dark mb-1">
               {index + 1}. {question.text}
             </p>
 
-            {/* Răspunsul dat */}
             <p className="text-sm text-dark2">
-              Gegebene Antwort:{" "}
+              {dict.givenAnswer}:{" "}
               <span className="font-semibold">{renderAnswerText(answer)}</span>
             </p>
           </div>

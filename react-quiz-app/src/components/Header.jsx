@@ -1,19 +1,9 @@
 import { quiz_logo } from "../assets";
 import { motion } from "framer-motion";
 
-export default function Header() {
+export default function Header({ language }) {
   return (
     <header className="px-6 py-4 mb-6 flex flex-col items-center">
-      {/* TITLU H1 CU SPACING MIC */}
-      <motion.h1
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2, duration: 0.7, ease: "easeOut" }}
-        className="text-4xl sm:text-5xl font-extrabold text-center font-poppins bg-gradient-to-r from-blue-400 via-pink-500 to-yellow-400 bg-clip-text text-transparent drop-shadow mb-2"
-      >
-        Welcome to React Quiz
-      </motion.h1>
-
       {/* IMAGINEA CU EFECT DE ROTIRE ȘI UMBRĂ */}
       <div className="max-w-screen-md w-full flex items-center justify-center perspective-1000">
         <motion.img
@@ -31,6 +21,17 @@ export default function Header() {
           className="w-full max-w-[400px] h-auto drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)] rounded-2xl"
         />
       </div>
+      {/* TITLU H1 CU SPACING MIC */}
+      <motion.h1
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2, duration: 0.7, ease: "easeOut" }}
+        className="text-4xl sm:text-5xl font-extrabold text-center font-poppins bg-gradient-to-r from-blue-400 via-pink-500 to-yellow-400 bg-clip-text text-transparent drop-shadow mb-2"
+      >
+        {language === "de"
+          ? "Willkommen beim React Quiz"
+          : "Welcome to React Quiz"}
+      </motion.h1>
     </header>
   );
 }
