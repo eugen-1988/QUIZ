@@ -1,2 +1,7 @@
 User-agent: *
+Disallow: /quiz
+Disallow: /login
+Disallow: /results
 Allow: /
+
+Sitemap: https://react-quiz-app-git-main-eugens-projects-ce03cab9.vercel.app/sitemap.xml
