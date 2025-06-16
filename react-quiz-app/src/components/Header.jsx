@@ -11,12 +11,6 @@ export default function Header({ language }) {
           alt="Quiz Logo"
           initial={{ opacity: 0, scale: 0.8, rotateX: -15 }}
           animate={{ opacity: 1, scale: 1, rotateX: 0 }}
-          whileHover={{
-            scale: 1.05,
-            rotateY: 8,
-            rotateX: -3,
-            boxShadow: "0px 20px 40px rgba(0, 0, 0, 0.3)",
-          }}
           transition={{ duration: 0.8, ease: "easeInOut" }}
           className="w-full max-w-[400px] h-auto drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)] rounded-2xl"
         />
