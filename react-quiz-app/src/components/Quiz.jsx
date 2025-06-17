@@ -19,10 +19,8 @@ export default function Quiz({
 
   const answeredRef = useRef(false);
 
-  // 🔁 Selectăm fișierul de întrebări în funcție de limbă
   const questions = language === "en" ? questions_en : questions_de;
 
-  // 🔁 Selectăm doar primele N întrebări
   const selectedQuestions = useMemo(
     () => questions.slice(0, questionCount),
     [questions, questionCount]
@@ -49,7 +47,7 @@ export default function Quiz({
       } else {
         setQuizDone(true);
       }
-    }, 3000); // Poți regla delay-ul după cum dorești
+    }, 3000);
   };
 
   return (

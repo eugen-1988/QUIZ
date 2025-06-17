@@ -25,18 +25,15 @@ export default function Answers({ answers, onSelect, language }) {
     if (!selected) return "primary-btn w-full mb-3";
 
     if (answer === selected) {
-      // ✅ Răspuns ales de utilizator
       return answer === correctAnswer
         ? "bg-green-500 text-white w-full mb-3 py-2 px-4 rounded-lg ring-4 ring-green-300 ring-offset-2"
         : "bg-red-500 text-white w-full mb-3 py-2 px-4 rounded-lg ring-4 ring-red-300 ring-offset-2";
     }
 
     if (answer === correctAnswer) {
-      // ✅ Afișăm răspunsul corect chiar dacă nu a fost ales
       return "bg-green-500/80 text-white w-full mb-3 py-2 px-4 rounded-lg";
     }
 
-    // ❌ Alte răspunsuri incorecte neselectate
     return "bg-gray-200 text-dark w-full mb-3 py-2 px-4 rounded-lg";
   };
 

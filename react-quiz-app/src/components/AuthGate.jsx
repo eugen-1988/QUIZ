@@ -12,7 +12,7 @@ export default function AuthGate({ onAuthSuccess, language }) {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setIsAuthenticated(true);
-        onAuthSuccess(); // Pornește aplicația (quizul) dacă e logat
+        onAuthSuccess();
       } else {
         setIsAuthenticated(false);
       }

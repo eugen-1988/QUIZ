@@ -4,7 +4,6 @@ import { FiClock } from "react-icons/fi";
 export default function QuestionTimer({ timeout, onTimeout, mode }) {
   const [timeLeft, setTimeLeft] = useState(timeout);
 
-  // 🔁 Scade timpul la fiecare 100ms
   useEffect(() => {
     const interval = setInterval(() => {
       setTimeLeft((prev) => prev - 100);
@@ -12,17 +11,14 @@ export default function QuestionTimer({ timeout, onTimeout, mode }) {
     return () => clearInterval(interval);
   }, []);
 
-  // 🚨 Dacă timpul s-a scurs, se apelează onTimeout
   useEffect(() => {
     if (timeLeft <= 0) {
       onTimeout();
     }
   }, [timeLeft, onTimeout]);
 
-  // 📊 Progresul în procente pentru bara de timp
   const progress = (timeLeft / timeout) * 100;
 
-  // 🎨 Culoarea barei în funcție de dificultate
   const barColor =
     {
       easy: "bg-green-500",
@@ -30,7 +26,6 @@ export default function QuestionTimer({ timeout, onTimeout, mode }) {
       hard: "bg-red-500",
     }[mode] || "bg-green-500";
 
-  // ⏱️ Formatul timpului (00:MM:SS)
   const formatTime = (ms) => {
     const totalSeconds = Math.ceil(ms / 1000);
     const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, "0");

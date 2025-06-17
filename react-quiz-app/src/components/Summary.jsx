@@ -6,7 +6,7 @@ import {
   FaRegClock,
   FaRedo,
 } from "react-icons/fa";
-import { saveQuizResult } from "../utils/saveQuizResult"; // ✅ importă funcția de salvare
+import { saveQuizResult } from "../utils/saveQuizResult";
 
 export default function Summary({ answers, onRestart, language, mode }) {
   const total = answers.length;
@@ -15,12 +15,10 @@ export default function Summary({ answers, onRestart, language, mode }) {
   const incorrect = total - correct - skipped;
   const percent = Math.round((correct / total) * 100);
 
-  // ✅ Salvează scorul o singură dată când componenta se montează
   useEffect(() => {
     saveQuizResult(correct, mode);
   }, []);
 
-  // 🔁 Dicționar pentru limbi
   const t = {
     de: {
       completed: "Quiz abgeschlossen",
@@ -79,33 +77,34 @@ export default function Summary({ answers, onRestart, language, mode }) {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md relative">
-      {/* 🔁 Buton Restart */}
+      {/*  Buton Restart */}
       <button
         onClick={onRestart}
-        className="primary-btn absolute top-4 right-4 text-sm flex items-center gap-1"
+        className="primary-btn absolute top-2 right-2 text-xs sm:top-4 sm:right-4 sm:text-sm flex items-center gap-1 px-2 py-1 sm:px-3 sm:py-1.5"
       >
-        <FaRedo /> {dict.restart}
+        <FaRedo className="text-base sm:text-lg" />
+        {dict.restart}
       </button>
 
-      {/* 🏁 Imagine finală */}
+      {/*  Imagine finală */}
       <img
         src={quizComplete}
         alt={dict.completed}
         className="w-32 mx-auto mb-4 drop-shadow"
       />
 
-      {/* ✅ Titlu */}
+      {/*  Titlu */}
       <h2 className="text-2xl font-bold text-center text-dark mb-2 flex justify-center items-center gap-2">
         {dict.completed}
       </h2>
 
-      {/* 📊 Rezultat general */}
+      {/*  Rezultat general */}
       <p className="text-center text-dark mb-4">
         {dict.result} <strong>{correct}</strong> {dict.of} {total}{" "}
         {dict.correct} (<strong>{percent}%</strong>)
       </p>
 
-      {/* 📌 Statistici */}
+      {/*  Statistici */}
       <ul className="text-sm mb-6 flex justify-center gap-6">
         <li className="flex items-center gap-2 text-green-600">
           <FaCheckCircle /> {dict.correctSingle}: {correct}

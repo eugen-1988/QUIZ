@@ -27,7 +27,6 @@ export default function AuthForm({ onAuthSuccess, language }) {
           password
         );
 
-        // Setează nickname în profilul Firebase
         await updateProfile(userCredential.user, {
           displayName: nickname,
         });

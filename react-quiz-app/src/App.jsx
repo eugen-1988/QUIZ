@@ -126,7 +126,7 @@ export default function App() {
     >
       <Header language={language} />
 
-      {/* 🔁 Limbă + Logout */}
+      {/*  Limbă + Logout */}
       <div className="absolute top-6 right-6 flex gap-2 items-center">
         {isAuthenticated && (
           <button
